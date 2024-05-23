@@ -11,8 +11,10 @@ void setup() {
 }
 
 void loop() {
-  testLowBeamOn(5000);
-  testLowBeamOff(1000);
+  testLowBeamOn(2000);
+  testLowBeamOff(2000);
+  testHighBeamOn(2000);
+  testHighBeamOff(2000);
   while (true) {
 
   }
@@ -41,6 +43,7 @@ void testLowBeamOn(int time) {
   while (Wire.available()) {
     int receivedData = Wire.read(); // Read data from slave
     x = receivedData; // Update variable x with received data
+    Serial.println();
     Serial.println("Received data from slave: " + String(x)); // Print received data
     Serial.println("Expected response: " + String(expectedResponse)); // Debug
     if (receivedData == expectedResponse) {
@@ -75,6 +78,7 @@ void testLowBeamOff(int time) {
   while (Wire.available()) {
     int receivedData = Wire.read(); // Read data from slave
     x = receivedData; // Update variable x with received data
+    Serial.println();
     Serial.println("Received data from slave: " + String(x)); // Print received data
     Serial.println("Expected response: " + String(expectedResponse)); // Debug
     if (receivedData == expectedResponse) {
@@ -85,6 +89,78 @@ void testLowBeamOff(int time) {
     } else {
       Serial.println("###########");
       Serial.println("LB is ON");
+      Serial.println("###########");
+      Serial.println("Test failed");
+      Serial.println("###########");
+
+    }
+  }
+  delay(time);
+}
+
+void testHighBeamOn(int time) {
+  int expectedResponse = 2;
+  String command = "HighBeam_ON";
+
+  // Send the command
+  Wire.beginTransmission(SLAVE_ADDR);
+  Wire.write(command.c_str());
+  Wire.endTransmission();
+  Serial.println("Command sent: " + command);
+
+  // Request data from slave
+  Wire.requestFrom(SLAVE_ADDR, 1); // Request data from slave
+
+  while (Wire.available()) {
+    int receivedData = Wire.read(); // Read data from slave
+    x = receivedData; // Update variable x with received data
+    Serial.println();
+    Serial.println("Received data from slave: " + String(x)); // Print received data
+    Serial.println("Expected response: " + String(expectedResponse)); // Debug
+    if (receivedData == expectedResponse) {
+      Serial.println("HB is ON");
+      Serial.println("###########");
+      Serial.println("Test passed");
+      Serial.println("###########");
+    } else {
+      Serial.println("###########");
+      Serial.println("HB is OFF");
+      Serial.println("###########");
+      Serial.println("Test failed");
+      Serial.println("###########");
+
+    }
+  }
+  delay(time);
+}
+
+void testHighBeamOff(int time) {
+  int expectedResponse = 0;
+  String command = "HighBeam_OFF";
+
+  // Send the command
+  Wire.beginTransmission(SLAVE_ADDR);
+  Wire.write(command.c_str());
+  Wire.endTransmission();
+  Serial.println("Command sent: " + command);
+
+  // Request data from slave
+  Wire.requestFrom(SLAVE_ADDR, 1); // Request data from slave
+
+  while (Wire.available()) {
+    int receivedData = Wire.read(); // Read data from slave
+    x = receivedData; // Update variable x with received data
+    Serial.println();
+    Serial.println("Received data from slave: " + String(x)); // Print received data
+    Serial.println("Expected response: " + String(expectedResponse)); // Debug
+    if (receivedData == expectedResponse) {
+      Serial.println("HB is OFF");
+      Serial.println("###########");
+      Serial.println("Test passed");
+      Serial.println("###########");
+    } else {
+      Serial.println("###########");
+      Serial.println("HB is ON");
       Serial.println("###########");
       Serial.println("Test failed");
       Serial.println("###########");

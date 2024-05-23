@@ -1,13 +1,16 @@
 #include <Wire.h>
 
 #define SLAVE_ADDR 9
-#define LED_PIN 13
+#define LB 13
+#define HB 12
+#define FOG 11
 
 void setup() {
   Wire.begin(SLAVE_ADDR);
   Wire.onRequest(requestEvent);
   Wire.onReceive(receiveEvent);
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(LB, OUTPUT);
+  pinMode(HB, OUTPUT);
   Serial.begin(9600);
   Serial.println("I2C Slave Demonstration");
 }
@@ -23,24 +26,48 @@ void receiveEvent(int numBytes) {
   
   // Process the received command immediately
   if (command == "LowBeam_ON") {
-    digitalWrite(LED_PIN, HIGH);
+    digitalWrite(LB, HIGH);
     Serial.println("Low Beam turned on");
   } 
   else if (command == "LowBeam_OFF") {
-    digitalWrite(LED_PIN, LOW);
+    digitalWrite(LB, LOW);
     Serial.println("Low Beam turned off");
   }
   else if (command == "HighBeam_ON") {
-    digitalWrite(LED_PIN, LOW);
-    // digitalWrite()
+    digitalWrite(LB, HIGH);
+    digitalWrite(HB, HIGH);
+    Serial.println("High Beam turned on");
   }
-  
+  else if (command == "HighBeam_OFF") {
+    digitalWrite(LB, LOW);
+    digitalWrite(HB, LOW);
+    Serial.println("High Beam turned off");
+  }
+  else if (command == "Fog_ON") {
+    digitalWrite(LB, HIGH);
+    digitalWrite(FOG, HIGH);
+    Serial.println("Fog Beam turned on");
+  }
 }
-
+/*
+  LB OFF && HB OFF => 0
+  LB ON && HB OFF => 1
+  LB ON && HB ON => 2
+  
+*/
 void requestEvent() {
   // Check if LED is on, send 1 if it is, otherwise send 0
-  int ledState = digitalRead(LED_PIN);
-  Wire.write(ledState);
+  int LBState = digitalRead(LB);
+  int HBState = digitalRead(HB);
+  if (LBState == 0 && HBState == 0) {
+    Wire.write(0);
+  }
+  else if (LBState == 1 && HBState == 0) {
+    Wire.write(1);
+  }
+  else if (LBState == 1 && HBState == 1) {
+    Wire.write(2);
+  }
 }
 
 void loop() {
