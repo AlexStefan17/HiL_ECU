@@ -11,6 +11,7 @@ void setup() {
   Wire.onReceive(receiveEvent);
   pinMode(LB, OUTPUT);
   pinMode(HB, OUTPUT);
+  pinMode(FOG, OUTPUT);
   Serial.begin(9600);
   Serial.println("I2C Slave Demonstration");
 }
@@ -48,25 +49,38 @@ void receiveEvent(int numBytes) {
     digitalWrite(FOG, HIGH);
     Serial.println("Fog Beam turned on");
   }
+  else if (command == "Fog_OFF") {
+    digitalWrite(LB, LOW);
+    digitalWrite(FOG, LOW);
+    Serial.println("Fog Beam turned on");
+  }
 }
 /*
-  LB OFF && HB OFF => 0
-  LB ON && HB OFF => 1
-  LB ON && HB ON => 2
-  
+  LB OFF && HB OFF && FOG OFF => 0
+  LB ON && HB OFF FOG OFF => 1
+  LB ON && HB ON FOG OFF => 2
+  LB ON && && HB OFF && FOG ON => 3
+  LB ON && && HB ON && FOG ON => 4
 */
 void requestEvent() {
   // Check if LED is on, send 1 if it is, otherwise send 0
   int LBState = digitalRead(LB);
   int HBState = digitalRead(HB);
-  if (LBState == 0 && HBState == 0) {
+  int FogState = digitalRead(FOG);
+  if (LBState == 0 && HBState == 0 && FogState == 0) {
     Wire.write(0);
   }
-  else if (LBState == 1 && HBState == 0) {
+  else if (LBState == 1 && HBState == 0 && FogState == 0) {
     Wire.write(1);
   }
-  else if (LBState == 1 && HBState == 1) {
+  else if (LBState == 1 && HBState == 1 && FogState == 0) {
     Wire.write(2);
+  }
+  else if (LBState == 1 && HBState == 0 && FogState == 1) {
+    Wire.write(3);
+  }
+  else if (LBState == 1 && HBState == 1 && FogState == 1) {
+    Wire.write(4);
   }
 }
 

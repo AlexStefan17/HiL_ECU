@@ -15,6 +15,8 @@ void loop() {
   testLowBeamOff(2000);
   testHighBeamOn(2000);
   testHighBeamOff(2000);
+  testFogOn(2000);
+  testFogOff(2000);
   while (true) {
 
   }
@@ -44,6 +46,9 @@ void testLowBeamOn(int time) {
     int receivedData = Wire.read(); // Read data from slave
     x = receivedData; // Update variable x with received data
     Serial.println();
+    Serial.println("###########");
+    Serial.println("Test testLowBeamOn");
+    Serial.println("###########");
     Serial.println("Received data from slave: " + String(x)); // Print received data
     Serial.println("Expected response: " + String(expectedResponse)); // Debug
     if (receivedData == expectedResponse) {
@@ -79,6 +84,9 @@ void testLowBeamOff(int time) {
     int receivedData = Wire.read(); // Read data from slave
     x = receivedData; // Update variable x with received data
     Serial.println();
+    Serial.println("###########");
+    Serial.println("Test testLowBeamOff");
+    Serial.println("###########");
     Serial.println("Received data from slave: " + String(x)); // Print received data
     Serial.println("Expected response: " + String(expectedResponse)); // Debug
     if (receivedData == expectedResponse) {
@@ -115,6 +123,9 @@ void testHighBeamOn(int time) {
     int receivedData = Wire.read(); // Read data from slave
     x = receivedData; // Update variable x with received data
     Serial.println();
+    Serial.println("###########");
+    Serial.println("Test testHighBeamOn");
+    Serial.println("###########");
     Serial.println("Received data from slave: " + String(x)); // Print received data
     Serial.println("Expected response: " + String(expectedResponse)); // Debug
     if (receivedData == expectedResponse) {
@@ -151,6 +162,9 @@ void testHighBeamOff(int time) {
     int receivedData = Wire.read(); // Read data from slave
     x = receivedData; // Update variable x with received data
     Serial.println();
+    Serial.println("###########");
+    Serial.println("Test testHighBeamOff");
+    Serial.println("###########");
     Serial.println("Received data from slave: " + String(x)); // Print received data
     Serial.println("Expected response: " + String(expectedResponse)); // Debug
     if (receivedData == expectedResponse) {
@@ -168,4 +182,89 @@ void testHighBeamOff(int time) {
     }
   }
   delay(time);
+}
+
+void testFogOn(int time) {
+  int expectedResponse = 3;
+  String command = "Fog_ON";
+
+  // Send the command
+  Wire.beginTransmission(SLAVE_ADDR);
+  Wire.write(command.c_str());
+  Wire.endTransmission();
+  Serial.println("Command sent: " + command);
+
+  // Request data from slave
+  Wire.requestFrom(SLAVE_ADDR, 1); // Request data from slave
+
+  while (Wire.available()) {
+    int receivedData = Wire.read(); // Read data from slave
+    x = receivedData; // Update variable x with received data
+    Serial.println();
+    Serial.println("###########");
+    Serial.println("Test testFogOn");
+    Serial.println("###########");
+    Serial.println("Received data from slave: " + String(x)); // Print received data
+    Serial.println("Expected response: " + String(expectedResponse)); // Debug
+    if (receivedData == expectedResponse) {
+      Serial.println("Fog is ON");
+      Serial.println("###########");
+      Serial.println("Test passed");
+      Serial.println("###########");
+    } else {
+      Serial.println("###########");
+      Serial.println("Fog is OFF");
+      Serial.println("###########");
+      Serial.println("Test failed");
+      Serial.println("###########");
+
+    }
+  }
+  delay(time);
+}
+
+void testFogOff(int time) {
+  int expectedResponses[] = {0}; // Expected responses for fog off
+  int expectedResponseSize = sizeof(expectedResponses) / sizeof(expectedResponses[0]);
+  String command = "Fog_OFF";
+
+  sendMessage(command);
+
+  // Request data from slave
+  Wire.requestFrom(SLAVE_ADDR, 1); // Request data from slave
+
+  while (Wire.available()) {
+    int receivedData = Wire.read(); // Read data from slave
+    x = receivedData; // Update variable x with received data
+    Serial.println();
+    Serial.println("###########");
+    Serial.println("Test testFogOff");
+    Serial.println("###########");
+    Serial.println("Received data from slave: " + String(x)); // Print received data
+
+    // Check if the received data is in the expected responses
+    if (isValueInArray(receivedData, expectedResponses, expectedResponseSize)) {
+      Serial.println("Fog is OFF");
+      Serial.println("###########");
+      Serial.println("Test passed");
+      Serial.println("###########");
+    } else {
+      Serial.println("###########");
+      Serial.println("Fog is ON");
+      Serial.println("###########");
+      Serial.println("Test failed");
+      Serial.println("###########");
+    }
+  }
+  delay(time);
+}
+
+// Function to check if a value is in the array
+bool isValueInArray(int value, int array[], int size) {
+  for (int i = 0; i < size; i++) {
+    if (array[i] == value) {
+      return true; // Value found in the array
+    }
+  }
+  return false; // Value not found in the array
 }
