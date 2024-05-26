@@ -3,6 +3,7 @@
 #define SLAVE_ADDR 9
 
 int x = 0; // Variable to be modified by the slave
+bool testsCompleted = false; // Flag to track if tests are completed
 
 void setup() {
   Wire.begin();
@@ -10,15 +11,26 @@ void setup() {
   Serial.println("I2C Master Demonstration");
 }
 
-void loop() {
-  testLowBeamOn(2000);
-  testLowBeamOff(2000);
-  testHighBeamOn(2000);
-  testHighBeamOff(2000);
-  testFogOn(2000);
-  testFogOff(2000);
-  while (true) {
 
+void loop() {
+  if (!testsCompleted) {
+    testLowBeamOn(2000);
+    testLowBeamOff(2000);
+    testHighBeamOn(2000);
+    testHighBeamOff(2000);
+    testFogOn(2000);
+    testFogOff(2000);
+
+    // Signal the end of tests
+    Serial.println("All tests completed");
+
+    // Set the flag to true after all tests are done
+    testsCompleted = true;
+  }
+
+  // Halt further execution
+  while (testsCompleted) {
+    // Do nothing, effectively stopping further loop execution
   }
 }
 
@@ -239,6 +251,42 @@ void testFogOff(int time) {
     Serial.println();
     Serial.println("###########");
     Serial.println("Test testFogOff");
+    Serial.println("###########");
+    Serial.println("Received data from slave: " + String(x)); // Print received data
+
+    // Check if the received data is in the expected responses
+    if (isValueInArray(receivedData, expectedResponses, expectedResponseSize)) {
+      Serial.println("Fog is OFF");
+      Serial.println("###########");
+      Serial.println("Test passed");
+      Serial.println("###########");
+    } else {
+      Serial.println("###########");
+      Serial.println("Fog is ON");
+      Serial.println("###########");
+      Serial.println("Test failed");
+      Serial.println("###########");
+    }
+  }
+  delay(time);
+}
+
+void testHBNegativeTest(int time) {
+  int expectedResponses[] = {0}; // Expected responses for fog off
+  int expectedResponseSize = sizeof(expectedResponses) / sizeof(expectedResponses[0]);
+  String command = "Fog_OFF";
+
+  sendMessage(command);
+
+  // Request data from slave
+  Wire.requestFrom(SLAVE_ADDR, 1); // Request data from slave
+
+  while (Wire.available()) {
+    int receivedData = Wire.read(); // Read data from slave
+    x = receivedData; // Update variable x with received data
+    Serial.println();
+    Serial.println("###########");
+    Serial.println("Test testHBNegativeTest");
     Serial.println("###########");
     Serial.println("Received data from slave: " + String(x)); // Print received data
 
