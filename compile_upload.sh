@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Define the base directory
-BASE_DIR="/var/lib/jenkins/workspace/git"
+BASE_DIR="/var/lib/jenkins/workspace"
 
 # Define the paths for the sketches
-SLAVE_LED_PATH="$BASE_DIR/slave_led/slave_led.ino"
-MASTER_LED_PATH="$BASE_DIR/master_led/master_led.ino"
+SLAVE_LED_PATH="$BASE_DIR/git/slave_led/slave_led.ino"
+MASTER_LED_PATH="$BASE_DIR/git/master_led/master_led.ino"
 
 # Define the board and port parameters
 BOARD="arduino:avr:uno"
