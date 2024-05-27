@@ -13,7 +13,7 @@ SLAVE_PORT="/dev/ttyUSB1"
 MASTER_PORT="/dev/ttyUSB0"
 
 # Ensure PATH is set to include arduino-cli installation directory
-export PATH=$PATH:/var/lib/jenkins/workspace/git/bin
+# export PATH=$PATH:/var/lib/jenkins/workspace/git/bin
 
 # Compile and upload the slave_led sketch
 arduino-cli compile -b $BOARD $SLAVE_LED_PATH
