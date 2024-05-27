@@ -16,9 +16,9 @@ MASTER_PORT="/dev/ttyUSB0"
 # export PATH=$PATH:/var/lib/jenkins/workspace/git/bin
 
 # Compile and upload the slave_led sketch
-arduino-cli compile -b $BOARD $SLAVE_LED_PATH
-arduino-cli upload -b $BOARD -p $SLAVE_PORT $SLAVE_LED_PATH
+./arduino-cli compile -b $BOARD $SLAVE_LED_PATH
+./arduino-cli upload -b $BOARD -p $SLAVE_PORT $SLAVE_LED_PATH
 
 # Compile and upload the master_led sketch
-arduino-cli compile -b $BOARD $MASTER_LED_PATH
-arduino-cli upload -b $BOARD -p $MASTER_PORT $MASTER_LED_PATH
+./arduino-cli compile -b $BOARD $MASTER_LED_PATH
+./arduino-cli upload -b $BOARD -p $MASTER_PORT $MASTER_LED_PATH
