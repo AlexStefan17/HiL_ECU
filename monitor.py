@@ -1,10 +1,14 @@
 import subprocess
 
 def monitor_and_log():
-    # Start the arduino-cli monitor command
-    process = subprocess.Popen(['./arduino-cli', 'monitor', '-p', '/dev/ttyUSB0'],
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
+    try:
+        # Start the arduino-cli monitor command
+        process = subprocess.Popen(['./arduino-cli', 'monitor', '-p', '/dev/ttyUSB0'],
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    except Exception as e:
+        print("Error:", e)
+        return
+    
     with open('log.txt', 'a') as log_file:  # Use 'a' for append mode
         while True:
             line = process.stdout.readline()
