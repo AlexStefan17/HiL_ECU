@@ -9,7 +9,7 @@ def monitor_and_log():
         print("Error:", e)
         return
     
-    with open('/var/lib/jenkins/workspace/HiL_ECU/log.txt', 'a') as log_file:  # Use absolute path for the log file
+    with open('/var/lib/jenkins/workspace/git/HiL_ECU/log.txt', 'a') as log_file:  # Use absolute path for the log file
         while True:
             line = process.stdout.readline()
             if line:
