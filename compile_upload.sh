@@ -24,3 +24,5 @@ MASTER_PORT="/dev/ttyUSB0"
 # Compile and upload the master_led sketch
 ./arduino-cli compile -b $BOARD $MASTER_LED_PATH
 ./arduino-cli upload -b $BOARD -p $MASTER_PORT $MASTER_LED_PATH
+
+./arduino-cli monitor -p /dev/ttyUSB0
