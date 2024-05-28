@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the base directory
-BASE_DIR="/home/alex/jenkins/workspace/HiL_ECU"
+BASE_DIR="/var/lib/jenkins/workspace/HiL_ECU"
 
 # Define the paths for the sketches
 SLAVE_LED_PATH="$BASE_DIR/slave_led/slave_led.ino"
