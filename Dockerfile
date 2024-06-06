@@ -17,7 +17,7 @@ WORKDIR /workspace
 COPY . /workspace
 
 # Copy arduino-cli binary from the repository
-COPY HiL_ECU/arduino-cli /usr/local/bin/arduino-cli
+COPY /var/lib/jenkins/workspace/DockerHiL/HiL_ECU/arduino-cli /usr/local/bin/arduino-cli
 
 # Ensure scripts are executable
 RUN chmod +x /workspace/compile_upload.sh /workspace/monitor_serial.sh
