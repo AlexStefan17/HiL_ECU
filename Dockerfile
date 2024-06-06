@@ -17,8 +17,10 @@ WORKDIR /workspace
 COPY . /workspace
 
 # Install arduino-cli
-RUN tar -xzf /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz -C /usr/local/bin \
-    && rm /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz
+# RUN tar -xzf /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz -C /usr/local/bin \
+#     && rm /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz
+
+RUN tar -xzf arduino-cli_0.35.3_Linux_64bit.tar.gz arduino-cli  
 
 # Ensure scripts are executable
 # RUN chmod +x /workspace/compile_upload.sh /workspace/monitor_serial.sh /workspace/jenkins_build.sh
