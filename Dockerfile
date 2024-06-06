@@ -21,7 +21,7 @@ RUN tar -xzf /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz -C /usr/local/bin 
     && rm /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz
 
 # Ensure scripts are executable
-RUN chmod +x /workspace/compile_upload.sh /workspace/monitor_serial.sh /workspace/jenkins_build.sh
+# RUN chmod +x /workspace/compile_upload.sh /workspace/monitor_serial.sh /workspace/jenkins_build.sh
 
 # Set the entrypoint
 ENTRYPOINT ["/bin/bash"]
