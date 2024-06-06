@@ -16,14 +16,14 @@ WORKDIR /workspace
 # Copy the project files into the container
 COPY . /workspace
 
-# Install arduino-cli
-# RUN tar -xzf /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz -C /usr/local/bin \
-#     && rm /workspace/arduino-cli_0.35.3_Linux_64bit.tar.gz
-
-RUN tar -xzf arduino-cli_0.35.3_Linux_64bit.tar.gz arduino-cli  
+# Copy arduino-cli binary from the repository
+COPY arduino-cli /usr/local/bin/arduino-cli
 
 # Ensure scripts are executable
-# RUN chmod +x /workspace/compile_upload.sh /workspace/monitor_serial.sh /workspace/jenkins_build.sh
+RUN chmod +x /workspace/compile_upload.sh /workspace/monitor_serial.sh
 
 # Set the entrypoint
 ENTRYPOINT ["/bin/bash"]
+
+# Run compile_upload.sh script when the container starts
+CMD ["bash", "/workspace/compile_upload.sh"]
