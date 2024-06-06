@@ -17,7 +17,7 @@ WORKDIR /workspace
 COPY . /workspace
 
 # Copy arduino-cli binary from the repository
-COPY arduino-cli /usr/local/bin/arduino-cli
+COPY HiL_ECU/arduino-cli /usr/local/bin/arduino-cli
 
 # Ensure scripts are executable
 RUN chmod +x /workspace/compile_upload.sh /workspace/monitor_serial.sh
